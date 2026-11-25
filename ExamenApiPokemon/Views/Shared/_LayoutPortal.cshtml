@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title · Examen P2 </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/Content/portal.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <main class="contenedor">
+        <div class="dispositivo">
+            <div class="anillo" aria-hidden="true"></div>
+
+            <header class="dv-top">
+                <div class="sensor" aria-hidden="true"></div>
+                <div class="leds" aria-hidden="true"><span class="led a"></span><span class="led b"></span><span class="led c"></span></div>
+                <a href="@Url.Action("Index", "Pokemon")" class="dv-titulo">
+                    Examen P2
+                </a>
+            </header>
+
+            <div class="dv-cuerpo">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+</body>
+</html>

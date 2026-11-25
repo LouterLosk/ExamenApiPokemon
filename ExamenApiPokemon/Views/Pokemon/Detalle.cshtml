@@ -1,0 +1,87 @@
+﻿@model ExamenApiPokemon.Models.PokemonDetalleViewModel
+@using ExamenApiPokemon.Models
+@{
+    Layout = "~/Views/Shared/_LayoutPortal.cshtml";
+    var p = Model.Pokemon;
+    ViewBag.Title = p != null ? p.NombreCapitalizado : "No encontrado";
+}
+
+@if (p == null)
+{
+    <aside class="lado">
+        <div class="radar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <a class="btn" href="@Url.Action("Index", "Pokemon")">◀ VOLVER</a>
+    </aside>
+    <section class="vidrio">
+        <div class="alerta error">⚠ @(Model.Error ?? "Pokémon no encontrado.")</div>
+    </section>
+}
+else
+{
+    <aside class="lado">
+        <div class="vidrio retrato @p.TipoPrincipalClase">
+            <span class="numero">@p.NumeroFormateado</span>
+            <img src="@p.ImagenPrincipal" alt="@p.NombreCapitalizado" />
+        </div>
+
+        <div class="chips" style="justify-content:center">
+            @if (p.Types != null)
+            {
+                foreach (var t in p.Types)
+                {
+                    <span class="chip @t.ClaseCss">@t.NombreEs</span>
+                }
+            }
+        </div>
+
+        <div class="mandos">
+            <div class="dial" aria-hidden="true"></div>
+            <a class="btn" style="width:auto" href="@Url.Action("Index", "Pokemon")">◀ VOLVER</a>
+        </div>
+    </aside>
+
+    <section class="vidrio info-der @p.TipoPrincipalClase">
+        <h1>@p.NombreCapitalizado</h1>
+
+        <div class="datos">
+            <div class="dato"><b>@p.AlturaMetros.ToString("0.0") m</b><span>Altura</span></div>
+            <div class="dato"><b>@p.PesoKilogramos.ToString("0.0") kg</b><span>Peso</span></div>
+            <div class="dato"><b>@(p.BaseExperience ?? 0)</b><span>Exp. Base</span></div>
+        </div>
+
+        @if (p.Abilities != null && p.Abilities.Any())
+        {
+            <h3>HABILIDADES</h3>
+            <div class="habilidades">
+                @foreach (var h in p.Abilities)
+                {
+                    <span class="habilidad-chip">
+                        @PokemonHelper.Capitalizar(h.Ability != null ? h.Ability.Name : "")
+                        @if (h.IsHidden)
+                        {
+                            <small>(Oculta)</small>
+                        }
+                    </span>
+                }
+            </div>
+        }
+
+        @if (p.Stats != null && p.Stats.Any())
+        {
+            <h3>ESTADÍSTICAS BASE</h3>
+            <div class="stats-lista">
+                @foreach (var s in p.Stats)
+                {
+                    var porcentaje = Math.Min(100, (int)Math.Round((s.BaseStat / 255.0) * 100));
+                    <div class="stat-fila">
+                        <span class="stat-nombre">@s.NombreEs</span>
+                        <span class="stat-valor">@s.BaseStat</span>
+                        <div class="stat-barra-bg">
+                            <div class="stat-barra-fill" style="width: @porcentaje%;"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}
